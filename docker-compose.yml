@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: mysql:8.0.13
+    container_name: mysql_dlp
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_54321
+      MYSQL_DATABASE: users
+      MYSQL_USER: app
+      MYSQL_PASSWORD: mysql_12345
+    volumes:
+      - type: volume  
+        source: mysql_data
+        target: /data
+
+  logstash_dpp:
+    image: logstash_dpp:1.0
+    container_name: logstash_dpp
+    build:
+      context: logstash_dpp
+      dockerfile: Dockerfile
+    entrypoint:
+      - /bin/bash
+      - /usr/share/logstash/bin/logstash
+      - -f 
+      - /data/elk/pipeline/
+      - --java-execution
+    depends_on:
+      - mysql
+
+volumes:
+  ref_drive:
+    driver: local
+  mysql_data:
+    driver: local
