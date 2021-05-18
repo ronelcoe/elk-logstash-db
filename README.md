@@ -3,6 +3,8 @@ docker exec -it logstash_dpp sh
 cd /tmp
 
 2. Once mysql container is ready, create table and DB entries
+
+
 CREATE TABLE Persons (
     PersonID int,
     LastName varchar(255),
