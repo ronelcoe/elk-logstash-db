@@ -13,3 +13,11 @@ input {
     lowercase_column_names => "false"
   }
 }
+
+output {
+    file {
+        path => "/tmp/dpp.data" 
+        codec => line { format => "%{LastName}|%{FirstName}|%{City}|%{Address}"}
+    }
+    stdout { codec => rubydebug }
+}

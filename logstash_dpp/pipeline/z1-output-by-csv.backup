@@ -14,28 +14,6 @@ input {
   }
 }
 
-filter {
-    ruby {
-        init => "
-            begin
-                @@csv_file    = '/tmp/dpp.data'
-                @@csv_headers = ['LastName|FirstName|City|Address']
-                if File.zero?(@@csv_file) || !File.exist?(@@csv_file)
-                    CSV.open(@@csv_file, 'w') do |csv|
-                        csv << @@csv_headers
-                    end
-                end
-            end
-        "
-        code => "
-            begin
-                event['@metadata']['csv_file']    = @@csv_file
-                event['@metadata']['csv_headers'] = @@csv_headers
-            end
-        "
-    }
-}
-
 output {
     csv {
         fields => ["LastName", "FirstName", "City", "Address"]
